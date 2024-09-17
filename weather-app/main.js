@@ -1,18 +1,21 @@
-const apiKey = "7542f185deb047f5a194364c4c7bda87"; // Замени на свой реальный API ключ
-const city = "Moscow"; // Название города
-const url = `https://api.weatherbit.io/v2.0/current?city=${city}&key=${apiKey}`;
+//  <p class="city-name">Moscow</p>
+//           <img></img>
+//           <p class="temperature"></p>
+//           <p class="weather-description"></p>
+//           <p class="wind-speed"></p>
+//           <p class="visibility"></p>
+//           <p class="pres"></p>
 
-fetch(url)
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error("Ошибка запроса к API");
-    }
+const cities = ["Moscow", "Kyiv", "Berlin", "Praha", "NewYork"];
 
-    return response.json(); // Преобразуем ответ в JSON
-  })
-  .then((data) => {
-    console.log("Текущая температура в Москве:", data.data[0]);
-  })
-  .catch((error) => {
-    console.error("Ошибка:", error);
-  });
+for (let city of cities) {
+  const url = `https://api.weatherbit.io/v2.0/current?city=${city}&key=7542f185deb047f5a194364c4c7bda87`;
+  fetch(url)
+    .then((response) => {
+      if (!response.ok) throw new Error("Ошибка запроса к API");
+      return response.json();
+    })
+    .then((data) => {
+      console.log(`Current temp in ${city}`, data.data[0]);
+    });
+}
