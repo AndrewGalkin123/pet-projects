@@ -6,16 +6,24 @@
 //           <p class="visibility"></p>
 //           <p class="pres"></p>
 
-const cities = ["Moscow", "Kyiv", "Berlin", "Praha", "NewYork"];
+const cities = [
+  { city: "Moscow", lat: 55.7558, lon: 37.6173 },
+  { city: "Kyiv", lat: 50.4501, lon: 30.5234 },
+  { city: "Berlin", lat: 52.52, lon: 13.405 },
+  { city: "Praha", lat: 50.0755, lon: 14.4378 },
+  { city: "NewYork", lat: 40.7128, lon: -74.006 },
+];
 
 for (let city of cities) {
-  const url = `https://api.weatherbit.io/v2.0/current?city=${city}&key=7542f185deb047f5a194364c4c7bda87`;
+  const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${city.lat}&lon=${city.lon}&exclude=minutely,hourly,daily&units=metric&appid=6959ff24dcebfc2b4a76d227c51cea86`;
   fetch(url)
     .then((response) => {
       if (!response.ok) throw new Error("Ошибка запроса к API");
       return response.json();
     })
     .then((data) => {
-      console.log(`Current temp in ${city}`, data.data[0]);
-    });
+      const temp = data.current.temp; // Получаем текущую температуру
+      console.log(`Current temp in ${city.city}: ${temp}°C`);
+    })
+    .catch((error) => console.error("Ошибка:", error));
 }
