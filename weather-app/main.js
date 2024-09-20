@@ -1,12 +1,3 @@
-//  <p class="city-name">Moscow</p>
-//           <img></img>
-//           <p class="temperature"></p>
-//           <p class="weather-description"></p>
-//           <p class="wind-speed"></p>
-//           <p class="visibility"></p>
-//           <p class="pres"></p>
-//  <div class="swiper-slide"></div>
-
 const apiKey = "6959ff24dcebfc2b4a76d227c51cea86"; // Замени на свой реальный API-ключ
 const cities = [
   { name: "Moscow", lat: 55.7558, lon: 37.6173 },
@@ -28,8 +19,32 @@ for (let city of cities) {
       return response.json();
     })
     .then((data) => {
-      swiperSlides[index].append(document.createElement("p"));
-      swiperSlides[index].append(document.createElement("div"));
+      swiperSlides[index].append(
+        Object.assign(document.createElement("p"), {
+          innerHTML: `<p class="current-place">Current place:<p/>${city.name}`,
+        })
+      );
+      swiperSlides[index].append(
+        Object.assign(document.createElement("img"), {
+          src: `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
+        })
+      );
+      swiperSlides[index].append(
+        Object.assign(document.createElement("p"), {
+          innerHTML: data.weather[0].description.toUpperCase(),
+        })
+      );
+      swiperSlides[index].append(
+        Object.assign(document.createElement("p"), {
+          innerHTML: `Wind speed: ${data.wind.speed}`,
+        })
+      );
+      swiperSlides[index].append(
+        Object.assign(document.createElement("p"), {
+          innerHTML: `Pressure: ${data.main.pressure}`,
+        })
+      );
+      console.log(data);
       index++;
     })
     .catch((error) => console.error("Ошибка:", error));
